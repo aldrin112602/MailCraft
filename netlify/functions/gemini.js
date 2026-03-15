@@ -1,17 +1,10 @@
-/**
- * Netlify Function — Gemini AI Proxy
- * netlify/functions/gemini.js
- *
- * Set these in Netlify → Environment Variables:
- *   GEMINI_API_KEY  — your Google Gemini API key (free at aistudio.google.com)
- *   CHAT_SECRET     — any random string, same value in your frontend
- */
+
 
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
 
 const rateStore = {};
 const RATE_LIMIT  = 15;
-const RATE_WINDOW = 60 * 1000; // 1 minute
+const RATE_WINDOW = 60 * 1000; 
 
 function isRateLimited(ip) {
   const now   = Date.now();
@@ -70,7 +63,7 @@ exports.handler = async function (event) {
   const safePropmt = prompt.slice(0, 8000);
 
   const geminiRes = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },

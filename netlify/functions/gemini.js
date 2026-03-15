@@ -1,9 +1,8 @@
-
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN;
 
 const rateStore = {};
 const RATE_LIMIT  = 15;
-const RATE_WINDOW = 60 * 1000; // 1 minute
+const RATE_WINDOW = 60 * 1000;
 
 function isRateLimited(ip) {
   const now   = Date.now();
@@ -68,7 +67,7 @@ exports.handler = async function (event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: safePropmt }] }],
-        generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+        generationConfig: { temperature: 0.7 },
       }),
     }
   );

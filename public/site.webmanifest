@@ -1,0 +1,14 @@
+{
+  "name": "MailCraft — AI Email Assistant",
+  "short_name": "MailCraft",
+  "description": "Paraphrase emails and generate professional job application emails using Gemini AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f13",
+  "theme_color": "#6366f1",
+  "icons": [
+    { "src": "/favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

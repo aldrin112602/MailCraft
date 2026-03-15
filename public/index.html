@@ -3,7 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MailCraft — AI Email Assistant</title>
+  <title>MailCraft — AI Email Assistant by Aldrin Caballero</title>
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="title" content="MailCraft — AI Email Assistant by Aldrin Caballero">
+  <meta name="description" content="MailCraft is a free AI-powered email assistant. Paraphrase emails with the right tone or generate professional job application emails instantly using Gemini AI.">
+  <meta name="keywords" content="AI email assistant, email paraphraser, cover letter generator, job application email, Gemini AI, Aldrin Caballero, MailCraft">
+  <meta name="author" content="Aldrin Caballero">
+  <link rel="canonical" href="https://mailcraft-ai.netlify.app/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MailCraft by Aldrin Caballero">
+  <meta property="og:url" content="https://mailcraft-ai.netlify.app/">
+  <meta property="og:title" content="MailCraft — AI Email Assistant">
+  <meta property="og:description" content="Paraphrase emails with the right tone or generate professional job application emails instantly using Gemini AI.">
+  <meta property="og:image" content="https://mailcraft-ai.netlify.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MailCraft — AI Email Assistant">
+  <meta name="twitter:description" content="Paraphrase emails with the right tone or generate professional job application emails instantly using Gemini AI.">
+  <meta name="twitter:image" content="https://mailcraft-ai.netlify.app/og-image.png">
+
+  <!-- Theme & PWA -->
+  <meta name="theme-color" content="#6366f1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MailCraft",
+    "url": "https://mailcraft-ai.netlify.app/",
+    "description": "AI-powered email assistant for paraphrasing emails and generating professional job application emails using Gemini AI.",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Aldrin Caballero",
+      "url": "https://aldrin-portfolio-2026.netlify.app/",
+      "jobTitle": "Full-Stack Web Developer",
+      "sameAs": [
+        "https://github.com/aldrin112602",
+        "https://www.linkedin.com/in/aldrin02/"
+      ]
+    },
+    "featureList": [
+      "Email Paraphrasing",
+      "Cover Letter Generation",
+      "Follow-up Email Generation",
+      "Cold Outreach Email Generation",
+      "Tone Selection: Professional, Formal, Friendly, Concise"
+    ]
+  }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -480,7 +544,7 @@ const { createApp, ref, reactive, onMounted } = Vue;
 createApp({
   setup() {
     const PROXY_URL   = "/.netlify/functions/gemini";
-    const CHAT_SECRET = "onR(32nkKRmnbk5X";
+    const CHAT_SECRET = "PASTE_YOUR_CHAT_SECRET_HERE";
 
     const tab  = ref("paraphrase");
     const toast = reactive({ show: false, message: "", icon: "" });

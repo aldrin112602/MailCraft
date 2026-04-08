@@ -20,13 +20,11 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MailCraft — AI Email Assistant">
   <meta name="twitter:description" content="Paraphrase emails with the right tone or generate professional job application emails instantly using Gemini AI.">
   <meta name="twitter:image" content="https://mailcraft-ai.netlify.app/og-image.png">
 
-  <!-- Theme & PWA -->
   <meta name="theme-color" content="#6366f1">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -34,7 +32,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-  <!-- Schema.org structured data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -44,35 +41,27 @@
     "description": "AI-powered email assistant for paraphrasing emails and generating professional job application emails using Gemini AI.",
     "applicationCategory": "ProductivityApplication",
     "operatingSystem": "Any",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "author": {
       "@type": "Person",
       "name": "Aldrin Caballero",
       "url": "https://aldrin-portfolio-2026.netlify.app/",
       "jobTitle": "Full-Stack Web Developer",
-      "sameAs": [
-        "https://github.com/aldrin112602",
-        "https://www.linkedin.com/in/aldrin02/"
-      ]
+      "sameAs": ["https://github.com/aldrin112602","https://www.linkedin.com/in/aldrin02/"]
     },
     "featureList": [
-      "Email Paraphrasing",
-      "Cover Letter Generation",
-      "Follow-up Email Generation",
-      "Cold Outreach Email Generation",
-      "Tone Selection: Professional, Formal, Friendly, Concise"
+      "Email Paraphrasing","Cover Letter Generation","Follow-up Email Generation",
+      "Cold Outreach Email Generation","Suggest Reply","Tone Selection: Professional, Formal, Friendly, Concise"
     ]
   }
   </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
   <style>
     * { box-sizing: border-box; }
     body { font-family: 'DM Sans', sans-serif; }
@@ -89,7 +78,6 @@
       min-height: 100vh;
     }
 
-    /* Subtle grid pattern */
     .grid-bg {
       background-image:
         linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
@@ -109,11 +97,6 @@
       border-radius: 16px;
     }
 
-    .accent-card {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      border-radius: 16px;
-    }
-
     textarea {
       background: #0f0f13 !important;
       border: 1px solid rgba(255,255,255,0.08) !important;
@@ -124,6 +107,7 @@
       line-height: 1.7;
       transition: border-color 0.2s;
       resize: none;
+      width: 100%;
     }
     textarea:focus {
       outline: none;
@@ -137,11 +121,15 @@
       background: rgba(255,255,255,0.03);
       color: rgba(255,255,255,0.5);
       border-radius: 99px;
-      padding: 6px 16px;
+      padding: 6px 14px;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.15s;
       font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .tone-btn:hover { border-color: rgba(99,102,241,0.4); color: #a5b4fc; }
     .tone-btn.active {
@@ -149,18 +137,41 @@
       border-color: #6366f1;
       color: #a5b4fc;
     }
+    .tone-btn i { font-size: 11px; }
+
+    /* ── Tabs: scrollable on mobile ── */
+    .tab-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+
+    .tab-strip {
+      display: flex;
+      gap: 2px;
+      padding: 4px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      min-width: max-content;
+    }
 
     .tab-btn {
       font-family: 'Syne', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      padding: 10px 24px;
-      border-radius: 10px;
+      padding: 9px 18px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.15s;
       color: rgba(255,255,255,0.4);
       border: none;
       background: transparent;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .tab-btn.active {
       background: rgba(99,102,241,0.15);
@@ -172,7 +183,7 @@
       color: white;
       border: none;
       border-radius: 12px;
-      padding: 12px 28px;
+      padding: 12px 24px;
       font-family: 'Syne', sans-serif;
       font-weight: 600;
       font-size: 14px;
@@ -180,7 +191,9 @@
       transition: all 0.2s;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      width: 100%;
     }
     .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
     .btn-primary:active { transform: translateY(0); }
@@ -191,7 +204,7 @@
       color: rgba(255,255,255,0.6);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px;
-      padding: 8px 16px;
+      padding: 8px 14px;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.15s;
@@ -210,10 +223,49 @@
       color: #cbd5e1;
       font-size: 14px;
       line-height: 1.8;
-      min-height: 160px;
+      min-height: 140px;
       white-space: pre-wrap;
-      position: relative;
+      word-break: break-word;
     }
+
+    /* ── Reply variants ── */
+    .reply-card {
+      background: #0f0f13;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .reply-card:hover { border-color: rgba(99,102,241,0.3); }
+
+    .reply-card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(99,102,241,0.05);
+    }
+
+    .reply-card-body {
+      padding: 16px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .tone-tag {
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+    .tone-tag-professional { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .tone-tag-friendly { background: rgba(34,197,94,0.12); color: #86efac; }
+    .tone-tag-concise { background: rgba(234,179,8,0.12); color: #fde047; }
 
     .loading-shimmer {
       background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
@@ -246,9 +298,13 @@
       border-radius: 99px;
       font-family: 'Syne', sans-serif;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .badge-paraphrase { background: rgba(99,102,241,0.15); color: #a5b4fc; }
-    .badge-apply { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+    .badge-apply      { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+    .badge-reply      { background: rgba(20,184,166,0.15); color: #5eead4; }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -257,7 +313,10 @@
     .notification {
       position: fixed;
       bottom: 24px;
-      right: 24px;
+      right: 16px;
+      left: 16px;
+      max-width: 340px;
+      margin: 0 auto;
       background: #1e1e2e;
       border: 1px solid rgba(99,102,241,0.3);
       border-radius: 12px;
@@ -270,68 +329,122 @@
       align-items: center;
       gap: 10px;
     }
+    @media (min-width: 480px) {
+      .notification {
+        left: auto;
+        right: 24px;
+        max-width: 340px;
+        margin: 0;
+      }
+    }
     @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── Two-column layout helpers ── */
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 1024px) {
+      .split-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ── Tone scroll row on mobile ── */
+    .tone-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 480px) {
+      .tone-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+      }
+      .tone-row::-webkit-scrollbar { display: none; }
+    }
+
+    /* sticky output panel on desktop */
+    @media (min-width: 1024px) {
+      .output-sticky {
+        position: sticky;
+        top: 80px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 <body class="app-bg grid-bg">
 
 <div id="app" class="min-h-screen text-white">
 
-  <!-- Notification toast -->
+  <!-- Toast -->
   <div v-if="toast.show" class="notification">
-    <i :class="toast.icon" class="text-sm"></i>
-    {{ toast.message }}
+    <i :class="toast.icon" class="text-sm flex-shrink-0"></i>
+    <span>{{ toast.message }}</span>
   </div>
 
   <!-- Header -->
   <header class="glass border-b border-white/5 sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
           style="background: linear-gradient(135deg, #6366f1, #8b5cf6)">
           <i class="fas fa-pen-nib text-white text-xs"></i>
         </div>
         <span class="font-display font-800 text-lg tracking-tight">Mail<span style="color:#818cf8">Craft</span></span>
       </div>
       <div class="flex items-center gap-2 text-xs text-white/30">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
-        Gemini 1.5 Flash · Free tier
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse flex-shrink-0"></span>
+        <span class="hidden sm:inline">Gemini 1.5 Flash · Free tier</span>
+        <span class="sm:hidden">Gemini AI</span>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-10">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
 
     <!-- Hero -->
-    <div class="mb-10 fade-in">
-      <h1 class="font-display text-4xl font-800 mb-3 leading-tight">
+    <div class="mb-8 fade-in">
+      <h1 class="font-display text-3xl sm:text-4xl font-800 mb-2 leading-tight">
         Your AI <span style="color:#818cf8">Email</span> Assistant
       </h1>
-      <p class="text-white/40 text-base max-w-lg">
-        Paraphrase emails with the right tone, or generate professional job application emails instantly.
+      <p class="text-white/40 text-sm sm:text-base max-w-lg">
+        Paraphrase emails, craft job applications, or generate smart replies — instantly.
       </p>
     </div>
 
-    <!-- Tabs -->
-    <div class="flex gap-1 mb-8 p-1 rounded-xl w-fit" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06)">
-      <button class="tab-btn" :class="{ active: tab === 'paraphrase' }" @click="tab = 'paraphrase'">
-        <i class="fas fa-wand-magic-sparkles mr-2 text-xs"></i>Paraphrase Email
-      </button>
-      <button class="tab-btn" :class="{ active: tab === 'apply' }" @click="tab = 'apply'">
-        <i class="fas fa-briefcase mr-2 text-xs"></i>Auto-Apply
-      </button>
-      <button class="tab-btn" :class="{ active: tab === 'history' }" @click="tab = 'history'">
-        <i class="fas fa-clock-rotate-left mr-2 text-xs"></i>History
-        <span v-if="history.length" class="ml-1.5 text-xs bg-indigo-500/20 text-indigo-300 px-1.5 rounded-full">{{ history.length }}</span>
-      </button>
+    <!-- Tabs (scrollable on mobile) -->
+    <div class="tab-scroll mb-7">
+      <div class="tab-strip">
+        <button class="tab-btn" :class="{ active: tab === 'paraphrase' }" @click="tab = 'paraphrase'">
+          <i class="fas fa-wand-magic-sparkles text-xs"></i>Paraphrase
+        </button>
+        <button class="tab-btn" :class="{ active: tab === 'apply' }" @click="tab = 'apply'">
+          <i class="fas fa-briefcase text-xs"></i>Auto-Apply
+        </button>
+        <button class="tab-btn" :class="{ active: tab === 'reply' }" @click="tab = 'reply'">
+          <i class="fas fa-reply text-xs"></i>Suggest Reply
+          <span class="text-xs px-1.5 py-0.5 rounded-full" style="background:rgba(20,184,166,0.15);color:#5eead4;font-size:10px;">NEW</span>
+        </button>
+        <button class="tab-btn" :class="{ active: tab === 'history' }" @click="tab = 'history'">
+          <i class="fas fa-clock-rotate-left text-xs"></i>History
+          <span v-if="history.length" class="text-xs bg-indigo-500/20 text-indigo-300 px-1.5 rounded-full">{{ history.length }}</span>
+        </button>
+      </div>
     </div>
 
     <!-- ── TAB: PARAPHRASE ── -->
     <div v-if="tab === 'paraphrase'" class="fade-in">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="split-grid">
 
-        <!-- Left: Input -->
-        <div class="card p-6 space-y-5">
+        <!-- Input -->
+        <div class="card p-5 space-y-5">
           <div>
             <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
               Your Original Email
@@ -339,49 +452,42 @@
             <textarea
               v-model="paraphrase.input"
               rows="10"
-              placeholder="Paste your email here... e.g. hey can you send me the files asap thanks"
-              class="w-full p-4"
+              placeholder="Paste your email here… e.g. hey can you send me the files asap thanks"
+              class="p-4"
             ></textarea>
-            <div class="char-count">{{ paraphrase.input.length }} / 4000 chars</div>
+            <div class="char-count">{{ paraphrase.input.length }} / 4000</div>
           </div>
 
-          <!-- Tone selector -->
           <div>
-            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
-              Tone
-            </label>
-            <div class="flex flex-wrap gap-2">
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">Tone</label>
+            <div class="tone-row">
               <button
-                v-for="tone in tones"
-                :key="tone.value"
-                class="tone-btn"
+                v-for="tone in tones" :key="tone.value"
+                class="tone-btn flex-shrink-0"
                 :class="{ active: paraphrase.tone === tone.value }"
                 @click="paraphrase.tone = tone.value">
-                {{ tone.emoji }} {{ tone.label }}
+                <i :class="tone.icon"></i>
+                {{ tone.label }}
               </button>
             </div>
           </div>
 
-          <button class="btn-primary w-full justify-center"
+          <button class="btn-primary"
             @click="runParaphrase"
             :disabled="!paraphrase.input.trim() || paraphrase.loading">
             <i class="fas fa-wand-magic-sparkles text-xs" :class="{ 'fa-spin': paraphrase.loading }"></i>
-            {{ paraphrase.loading ? 'Rewriting...' : 'Paraphrase Email' }}
+            {{ paraphrase.loading ? 'Rewriting…' : 'Paraphrase Email' }}
           </button>
         </div>
 
-        <!-- Right: Output -->
-        <div class="card p-6 flex flex-col">
+        <!-- Output -->
+        <div class="card p-5 flex flex-col output-sticky">
           <div class="flex items-center justify-between mb-4">
-            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest">
-              Result
-            </label>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest">Result</label>
             <button v-if="paraphrase.output" class="btn-ghost" @click="copy(paraphrase.output)">
               <i class="fas fa-copy text-xs"></i> Copy
             </button>
           </div>
-
-          <!-- Loading shimmer -->
           <div v-if="paraphrase.loading" class="flex-1">
             <div class="loading-shimmer w-full"></div>
             <div class="loading-shimmer w-4/5"></div>
@@ -390,15 +496,10 @@
             <div class="loading-shimmer w-full mt-4"></div>
             <div class="loading-shimmer w-4/5"></div>
           </div>
-
-          <!-- Output -->
           <div v-else-if="paraphrase.output" class="result-box flex-1 fade-in">{{ paraphrase.output }}</div>
-
-          <!-- Empty state -->
-          <div v-else class="flex-1 flex flex-col items-center justify-center text-center py-16">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-              style="background:rgba(99,102,241,0.1)">
-              <i class="fas fa-envelope-open text-indigo-400 text-xl"></i>
+          <div v-else class="flex-1 flex flex-col items-center justify-center text-center py-12">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-3" style="background:rgba(99,102,241,0.1)">
+              <i class="fas fa-envelope-open text-indigo-400 text-lg"></i>
             </div>
             <p class="text-white/25 text-sm">Your rewritten email will appear here</p>
           </div>
@@ -408,70 +509,46 @@
 
     <!-- ── TAB: AUTO-APPLY ── -->
     <div v-if="tab === 'apply'" class="fade-in">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="split-grid">
 
-        <!-- Left: Inputs -->
-        <div class="card p-6 space-y-5">
-
+        <div class="card p-5 space-y-5">
           <div>
-            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
-              Job Description
-            </label>
-            <textarea
-              v-model="apply.jobDescription"
-              rows="6"
-              placeholder="Paste the full job description here..."
-              class="w-full p-4"
-            ></textarea>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">Job Description</label>
+            <textarea v-model="apply.jobDescription" rows="6" placeholder="Paste the full job description here…" class="p-4"></textarea>
           </div>
-
           <div>
             <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
               Your Background <span class="text-white/20 normal-case font-400">(brief summary)</span>
             </label>
-            <textarea
-              v-model="apply.background"
-              rows="4"
-              placeholder="e.g. Full-stack developer, 4 years experience, Laravel, Vue.js, React. Built school management systems and reservation platforms..."
-              class="w-full p-4"
-            ></textarea>
+            <textarea v-model="apply.background" rows="4" placeholder="e.g. Full-stack developer, 4 years experience, Laravel, Vue.js, React…" class="p-4"></textarea>
           </div>
-
           <div>
-            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
-              Email Type
-            </label>
-            <div class="flex gap-2 flex-wrap">
-              <button
-                v-for="type in applyTypes"
-                :key="type.value"
-                class="tone-btn"
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">Email Type</label>
+            <div class="tone-row">
+              <button v-for="type in applyTypes" :key="type.value"
+                class="tone-btn flex-shrink-0"
                 :class="{ active: apply.type === type.value }"
                 @click="apply.type = type.value">
+                <i :class="type.icon"></i>
                 {{ type.label }}
               </button>
             </div>
           </div>
-
-          <button class="btn-primary w-full justify-center"
+          <button class="btn-primary"
             @click="runApply"
             :disabled="!apply.jobDescription.trim() || !apply.background.trim() || apply.loading">
             <i class="fas fa-paper-plane text-xs" :class="{ 'fa-spin': apply.loading }"></i>
-            {{ apply.loading ? 'Generating...' : 'Generate Application Email' }}
+            {{ apply.loading ? 'Generating…' : 'Generate Application Email' }}
           </button>
         </div>
 
-        <!-- Right: Output -->
-        <div class="card p-6 flex flex-col">
+        <div class="card p-5 flex flex-col output-sticky">
           <div class="flex items-center justify-between mb-4">
-            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest">
-              Generated Email
-            </label>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest">Generated Email</label>
             <button v-if="apply.output" class="btn-ghost" @click="copy(apply.output)">
               <i class="fas fa-copy text-xs"></i> Copy
             </button>
           </div>
-
           <div v-if="apply.loading" class="flex-1">
             <div class="loading-shimmer w-2/5 mb-6"></div>
             <div class="loading-shimmer w-full"></div>
@@ -480,15 +557,11 @@
             <div class="loading-shimmer w-3/5"></div>
             <div class="loading-shimmer w-full mt-4"></div>
             <div class="loading-shimmer w-4/5"></div>
-            <div class="loading-shimmer w-full"></div>
           </div>
-
           <div v-else-if="apply.output" class="result-box flex-1 fade-in">{{ apply.output }}</div>
-
-          <div v-else class="flex-1 flex flex-col items-center justify-center text-center py-16">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-              style="background:rgba(139,92,246,0.1)">
-              <i class="fas fa-briefcase text-violet-400 text-xl"></i>
+          <div v-else class="flex-1 flex flex-col items-center justify-center text-center py-12">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-3" style="background:rgba(139,92,246,0.1)">
+              <i class="fas fa-briefcase text-violet-400 text-lg"></i>
             </div>
             <p class="text-white/25 text-sm">Your application email will appear here</p>
           </div>
@@ -496,9 +569,125 @@
       </div>
     </div>
 
+    <!-- ── TAB: SUGGEST REPLY ── -->
+    <div v-if="tab === 'reply'" class="fade-in">
+      <div class="split-grid">
+
+        <!-- Input -->
+        <div class="card p-5 space-y-5">
+          <!-- New badge -->
+          <div class="flex items-center gap-2 mb-1">
+            <span class="badge badge-reply"><i class="fas fa-star" style="font-size:9px"></i> New Feature</span>
+            <span class="text-xs text-white/30">Paste any email and get smart replies</span>
+          </div>
+
+          <div>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
+              Received Email
+            </label>
+            <textarea
+              v-model="reply.input"
+              rows="10"
+              placeholder="Paste the email you received here… e.g. Hi, we'd like to schedule an interview next week. Are you available?"
+              class="p-4"
+            ></textarea>
+            <div class="char-count">{{ reply.input.length }} / 4000</div>
+          </div>
+
+          <div>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">
+              Context <span class="text-white/20 normal-case font-400">(optional)</span>
+            </label>
+            <textarea
+              v-model="reply.context"
+              rows="3"
+              placeholder="e.g. I'm available Tuesday afternoon or Thursday. I'm very interested in the role."
+              class="p-4"
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest mb-3 block">Reply Tone</label>
+            <div class="tone-row">
+              <button
+                v-for="tone in replyTones" :key="tone.value"
+                class="tone-btn flex-shrink-0"
+                :class="{ active: reply.tone === tone.value }"
+                @click="reply.tone = tone.value">
+                <i :class="tone.icon"></i>
+                {{ tone.label }}
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-primary"
+            @click="runReply"
+            :disabled="!reply.input.trim() || reply.loading">
+            <i class="fas fa-reply text-xs" :class="{ 'fa-spin': reply.loading }"></i>
+            {{ reply.loading ? 'Generating Replies…' : 'Suggest Replies' }}
+          </button>
+        </div>
+
+        <!-- Output: reply variants -->
+        <div class="card p-5 flex flex-col output-sticky">
+          <div class="flex items-center justify-between mb-4">
+            <label class="text-xs font-display font-600 text-white/40 uppercase tracking-widest">Suggested Replies</label>
+            <span v-if="reply.variants.length" class="text-xs text-white/30">{{ reply.variants.length }} variants</span>
+          </div>
+
+          <!-- Loading -->
+          <div v-if="reply.loading" class="space-y-4">
+            <div class="reply-card">
+              <div class="reply-card-header"><div class="loading-shimmer w-24 mb-0" style="height:12px;margin:0"></div></div>
+              <div class="p-4">
+                <div class="loading-shimmer w-full"></div>
+                <div class="loading-shimmer w-4/5"></div>
+                <div class="loading-shimmer w-3/5"></div>
+              </div>
+            </div>
+            <div class="reply-card">
+              <div class="reply-card-header"><div class="loading-shimmer w-20 mb-0" style="height:12px;margin:0"></div></div>
+              <div class="p-4">
+                <div class="loading-shimmer w-full"></div>
+                <div class="loading-shimmer w-4/5"></div>
+                <div class="loading-shimmer w-3/5"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variants -->
+          <div v-else-if="reply.variants.length" class="space-y-4 fade-in">
+            <div
+              v-for="(v, i) in reply.variants" :key="i"
+              class="reply-card">
+              <div class="reply-card-header">
+                <div class="flex items-center gap-2">
+                  <span class="tone-tag" :class="`tone-tag-${v.toneClass}`">{{ v.toneLabel }}</span>
+                  <span class="text-xs text-white/25">Option {{ i + 1 }}</span>
+                </div>
+                <button class="btn-ghost py-1 px-3 text-xs" @click="copy(v.text)">
+                  <i class="fas fa-copy" style="font-size:10px"></i> Copy
+                </button>
+              </div>
+              <div class="reply-card-body">{{ v.text }}</div>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div v-else class="flex-1 flex flex-col items-center justify-center text-center py-12">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-3" style="background:rgba(20,184,166,0.1)">
+              <i class="fas fa-reply text-teal-400 text-lg"></i>
+            </div>
+            <p class="text-white/25 text-sm">Smart reply suggestions will appear here</p>
+            <p class="text-white/15 text-xs mt-1">Get 3 reply variants in different tones</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── TAB: HISTORY ── -->
     <div v-if="tab === 'history'" class="fade-in">
-      <div class="card p-6">
+      <div class="card p-5">
         <div class="flex items-center justify-between mb-6">
           <h2 class="font-display font-700 text-lg">Recent Activity</h2>
           <button v-if="history.length" class="btn-ghost text-red-400 border-red-500/20 hover:bg-red-500/10" @click="clearHistory">
@@ -506,27 +695,25 @@
           </button>
         </div>
 
-        <div v-if="!history.length" class="text-center py-20">
+        <div v-if="!history.length" class="text-center py-16">
           <i class="fas fa-inbox text-4xl text-white/10 mb-4 block"></i>
-          <p class="text-white/25">No history yet. Start paraphrasing or generating emails!</p>
+          <p class="text-white/25 text-sm">No history yet. Start paraphrasing or generating emails!</p>
         </div>
 
         <div v-else class="space-y-3">
-          <div
-            v-for="(item, i) in history"
-            :key="i"
-            class="history-item"
-            @click="restoreHistory(item)">
+          <div v-for="(item, i) in history" :key="i" class="history-item" @click="restoreHistory(item)">
             <div class="flex items-start justify-between gap-4">
               <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="badge" :class="item.type === 'paraphrase' ? 'badge-paraphrase' : 'badge-apply'">
-                    {{ item.type === 'paraphrase' ? '✦ Paraphrase' : '✦ Auto-Apply' }}
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="badge"
+                    :class="item.type === 'paraphrase' ? 'badge-paraphrase' : item.type === 'reply' ? 'badge-reply' : 'badge-apply'">
+                    <i :class="item.type === 'paraphrase' ? 'fas fa-wand-magic-sparkles' : item.type === 'reply' ? 'fas fa-reply' : 'fas fa-briefcase'" style="font-size:9px"></i>
+                    {{ item.type === 'paraphrase' ? 'Paraphrase' : item.type === 'reply' ? 'Suggest Reply' : 'Auto-Apply' }}
                   </span>
                   <span v-if="item.tone" class="text-xs text-white/25">{{ item.tone }}</span>
                 </div>
                 <p class="text-sm text-white/50 truncate">{{ item.input }}</p>
-                <p class="text-xs text-white/25 mt-1">{{ item.result.slice(0, 80) }}...</p>
+                <p class="text-xs text-white/25 mt-1">{{ item.result.slice(0, 80) }}…</p>
               </div>
               <span class="text-xs text-white/20 flex-shrink-0 mt-1">{{ item.time }}</span>
             </div>
@@ -546,38 +733,38 @@ createApp({
     const PROXY_URL   = "/.netlify/functions/gemini";
     const CHAT_SECRET = "onR(32nkKRmnbk5X";
 
-    const tab  = ref("paraphrase");
+    const tab   = ref("paraphrase");
     const toast = reactive({ show: false, message: "", icon: "" });
 
     const tones = [
-      { label: "Professional", value: "professional", emoji: "💼" },
-      { label: "Formal",       value: "formal",       emoji: "🎩" },
-      { label: "Friendly",     value: "friendly",     emoji: "😊" },
-      { label: "Concise",      value: "concise",      emoji: "⚡" },
+      { label: "Professional", value: "professional", icon: "fas fa-user-tie" },
+      { label: "Formal",       value: "formal",       icon: "fas fa-landmark" },
+      { label: "Friendly",     value: "friendly",     icon: "fas fa-face-smile" },
+      { label: "Concise",      value: "concise",      icon: "fas fa-bolt" },
+    ];
+
+    const replyTones = [
+      { label: "Any",          value: "any",          icon: "fas fa-shuffle" },
+      { label: "Professional", value: "professional", icon: "fas fa-user-tie" },
+      { label: "Friendly",     value: "friendly",     icon: "fas fa-face-smile" },
+      { label: "Concise",      value: "concise",      icon: "fas fa-bolt" },
     ];
 
     const applyTypes = [
-      { label: "Cover Letter Email", value: "cover_letter" },
-      { label: "Follow-up Email",    value: "follow_up"    },
-      { label: "Cold Outreach",      value: "cold_outreach"},
+      { label: "Cover Letter Email", value: "cover_letter",  icon: "fas fa-file-lines" },
+      { label: "Follow-up Email",    value: "follow_up",     icon: "fas fa-rotate-right" },
+      { label: "Cold Outreach",      value: "cold_outreach", icon: "fas fa-paper-plane" },
     ];
 
-    const paraphrase = reactive({
-      input: "", tone: "professional", output: "", loading: false,
-    });
-
-    const apply = reactive({
-      jobDescription: "", background: "", type: "cover_letter", output: "", loading: false,
-    });
+    const paraphrase = reactive({ input: "", tone: "professional", output: "", loading: false });
+    const apply      = reactive({ jobDescription: "", background: "", type: "cover_letter", output: "", loading: false });
+    const reply      = reactive({ input: "", context: "", tone: "any", variants: [], loading: false });
 
     const history = ref([]);
 
-    // ── Load history from localStorage ─────────────────────────────────────
     onMounted(() => {
       const saved = localStorage.getItem("mailcraft_history");
-      if (saved) {
-        try { history.value = JSON.parse(saved); } catch {}
-      }
+      if (saved) { try { history.value = JSON.parse(saved); } catch {} }
     });
 
     function saveHistory(item) {
@@ -597,6 +784,9 @@ createApp({
         paraphrase.output = item.result;
         paraphrase.tone   = item.tone;
         tab.value = "paraphrase";
+      } else if (item.type === "reply") {
+        reply.input = item.input;
+        tab.value = "reply";
       } else {
         apply.output = item.result;
         tab.value = "apply";
@@ -604,7 +794,6 @@ createApp({
       showToast("Restored from history", "fas fa-check");
     }
 
-    // ── Toast notification ──────────────────────────────────────────────────
     function showToast(message, icon = "fas fa-check") {
       toast.show    = true;
       toast.message = message;
@@ -612,29 +801,22 @@ createApp({
       setTimeout(() => { toast.show = false; }, 2500);
     }
 
-    // ── Copy to clipboard ───────────────────────────────────────────────────
     function copy(text) {
       navigator.clipboard.writeText(text).then(() => {
         showToast("Copied to clipboard!", "fas fa-copy");
       });
     }
 
-    // ── Call Gemini via proxy ───────────────────────────────────────────────
     async function callGemini(prompt) {
       const res = await fetch(PROXY_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-chat-token": CHAT_SECRET,
-        },
+        headers: { "Content-Type": "application/json", "x-chat-token": CHAT_SECRET },
         body: JSON.stringify({ prompt }),
       });
-
       if (!res.ok) {
         const e = await res.json().catch(() => ({}));
         throw new Error(e.error || `HTTP ${res.status}`);
       }
-
       const data = await res.json();
       return data.result;
     }
@@ -642,14 +824,12 @@ createApp({
     // ── Paraphrase ──────────────────────────────────────────────────────────
     async function runParaphrase() {
       if (!paraphrase.input.trim() || paraphrase.loading) return;
-
       const toneMap = {
         professional: "professional and polished",
         formal:       "formal and respectful",
         friendly:     "warm and friendly",
         concise:      "concise and to-the-point",
       };
-
       const prompt = `Rewrite the following email to sound ${toneMap[paraphrase.tone]}.
 Keep the same intent and key information. Do not add any commentary or explanation — output ONLY the rewritten email.
 
@@ -658,17 +838,10 @@ ${paraphrase.input.slice(0, 4000)}`;
 
       paraphrase.loading = true;
       paraphrase.output  = "";
-
       try {
         const result = await callGemini(prompt);
         paraphrase.output = result;
-        saveHistory({
-          type:   "paraphrase",
-          input:  paraphrase.input.slice(0, 100),
-          result: result,
-          tone:   paraphrase.tone,
-          time:   new Date().toLocaleTimeString(),
-        });
+        saveHistory({ type: "paraphrase", input: paraphrase.input.slice(0, 100), result, tone: paraphrase.tone, time: new Date().toLocaleTimeString() });
       } catch (err) {
         showToast("Error: " + err.message, "fas fa-triangle-exclamation");
       } finally {
@@ -679,13 +852,11 @@ ${paraphrase.input.slice(0, 4000)}`;
     // ── Auto-Apply ──────────────────────────────────────────────────────────
     async function runApply() {
       if (!apply.jobDescription.trim() || !apply.background.trim() || apply.loading) return;
-
       const typeMap = {
         cover_letter:  "a professional cover letter email applying for this position",
         follow_up:     "a polite follow-up email checking on the application status",
         cold_outreach: "a cold outreach email expressing interest in working with the company",
       };
-
       const prompt = `Write ${typeMap[apply.type]}.
 
 Job Description:
@@ -703,17 +874,10 @@ Requirements:
 
       apply.loading = true;
       apply.output  = "";
-
       try {
         const result = await callGemini(prompt);
         apply.output = result;
-        saveHistory({
-          type:   "apply",
-          input:  apply.jobDescription.slice(0, 100),
-          result: result,
-          tone:   apply.type,
-          time:   new Date().toLocaleTimeString(),
-        });
+        saveHistory({ type: "apply", input: apply.jobDescription.slice(0, 100), result, tone: apply.type, time: new Date().toLocaleTimeString() });
       } catch (err) {
         showToast("Error: " + err.message, "fas fa-triangle-exclamation");
       } finally {
@@ -721,10 +885,70 @@ Requirements:
       }
     }
 
+    // ── Suggest Reply ───────────────────────────────────────────────────────
+    async function runReply() {
+      if (!reply.input.trim() || reply.loading) return;
+
+      const toneInstruction = reply.tone === "any"
+        ? "Generate 3 reply variants: one professional, one friendly, and one concise."
+        : `Generate 3 reply variants, all in a ${reply.tone} tone but with slight variation in approach (e.g. brief, detailed, with a question).`;
+
+      const contextPart = reply.context.trim()
+        ? `\nAdditional context from the sender:\n${reply.context.slice(0, 500)}`
+        : "";
+
+      const prompt = `You are an expert email assistant. Read the email below and ${toneInstruction}
+
+${contextPart}
+
+Email to reply to:
+${reply.input.slice(0, 4000)}
+
+IMPORTANT: Respond ONLY with a JSON array. No markdown, no explanation, no backticks.
+Each object must have: "toneLabel" (short label like "Professional", "Friendly", "Concise"), "toneClass" (one of: professional, friendly, concise), and "text" (the full reply email body).
+
+Example format:
+[{"toneLabel":"Professional","toneClass":"professional","text":"Dear..."},{"toneLabel":"Friendly","toneClass":"friendly","text":"Hi..."},{"toneLabel":"Concise","toneClass":"concise","text":"Thanks..."}]`;
+
+      reply.loading  = true;
+      reply.variants = [];
+
+      try {
+        const raw = await callGemini(prompt);
+
+        // Clean possible markdown code fences
+        const clean = raw.replace(/```json|```/gi, "").trim();
+
+        let parsed;
+        try {
+          parsed = JSON.parse(clean);
+        } catch {
+          // Fallback: try to extract the JSON array if there's surrounding text
+          const match = clean.match(/\[[\s\S]*\]/);
+          if (match) parsed = JSON.parse(match[0]);
+          else throw new Error("Could not parse reply variants.");
+        }
+
+        reply.variants = parsed;
+
+        saveHistory({
+          type:   "reply",
+          input:  reply.input.slice(0, 100),
+          result: parsed[0]?.text || "",
+          tone:   reply.tone,
+          time:   new Date().toLocaleTimeString(),
+        });
+      } catch (err) {
+        showToast("Error: " + err.message, "fas fa-triangle-exclamation");
+      } finally {
+        reply.loading = false;
+      }
+    }
+
     return {
-      tab, toast, tones, applyTypes,
-      paraphrase, apply, history,
-      runParaphrase, runApply, copy,
+      tab, toast, tones, replyTones, applyTypes,
+      paraphrase, apply, reply, history,
+      runParaphrase, runApply, runReply, copy,
       clearHistory, restoreHistory,
     };
   }
